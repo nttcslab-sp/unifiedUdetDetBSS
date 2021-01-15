@@ -1,22 +1,22 @@
 function underdetBSS
     %% experimental conditions
-    nSrc = 4;                   % number of sources
+    nSrc = 3;                   % number of sources
     param.rate = 16000;         % sampling rate
     param.awinsel = 'sqrthann'; % window function      
     param.fftsize = 2 .^ [10 9];% frame length/shift
     
     %% read mixtures
-    mixWav = {wavread('mixture.wav')};
+    mixWav = {wavread('mixture3sources1_16k.wav')};
     
     %% STFT
-    [X,param] = stftAnaly(mixWav,param);
+    [X,param] = stft_analy(mixWav,param);
     
     %% FastFCA
     estSTFT = FastFCA_EM(X,nSrc);
     %estSTFT = FastFCA_MM(X,nSrc);
     
     %% ISTFT
-    estwav = stftSynth(estSTFT,param);
+    estwav = stft_synth(estSTFT,param);
     
     %% plot estimated sources
     estwav = permute(cell2mat(reshape(estwav,[1 1 nSrc])),[3 1 2]);
